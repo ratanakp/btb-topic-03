@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>View Detail</title>
+</head>
+<body>
+    <h2><u>View Book</u></h2>
+
+    <th:block th:if="${book} != null" th:object="${book}">
+        ID: [[*{id}]]<br>
+        Title: [[*{title}]]<br>
+        Author: [[*{author}]]<br>
+        Publisher: [[*{publisher}]]<br>
+    </th:block>
+
+    <h1 th:unless="${book}" style="color: red;">No book found!</h1>
+
+
+
+
+
+
+</body>
+</html>
