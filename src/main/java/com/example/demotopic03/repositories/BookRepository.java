@@ -54,4 +54,23 @@ public class BookRepository {
         return false;
     }
 
+
+
+    public boolean delete(Integer id) {
+        for (int i = 0; i < bookList.size(); i++) {
+            if(bookList.get(i).getId() == id) {
+                bookList.remove(i);
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+
+    public boolean create(Book book) {
+        return bookList.add(book);
+    }
+
+
 }

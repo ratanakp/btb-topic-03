@@ -2,17 +2,26 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title th:text="#{geeting.message}">Title</title>
+    <style>
+        .active {
+            background-color: blue;
+            color: white;
+            padding: 10px;
+        }
+    </style>
 </head>
 <body>
     <h1><u>List of All Books</u></h1>
 
+    <a href="/create">Create New Book</a>
     <table border="1" style="border-collapse: collapse;">
         <tr>
-            <th>ID</th>
+            <th th:text="#{table.id}">ID</th>
             <th>Title</th>
             <th>Author</th>
             <th>Publisher</th>
+            <th>Thumbnail</th>
             <th>Action</th>
         </tr>
 
@@ -21,14 +30,36 @@
             <td th:text="${book.getTitle()}">Title</td>
             <td th:text="${book.getAuthor()}"></td>
             <td th:text="${book.getPublisher()}"></td>
+
+            <td>
+                <img style="width: 100px; height: 100px" th:src="${book.getThumbnail()}" alt="">
+            </td>
+
             <td>
                 <a th:href="@{/view/{id}(id=${book.getId()})}"><button>View</button></a>
                 <a th:href="@{/update/{book_id}(book_id=${book.getId()})}"><button>Update</button></a>
-                <a href="#"><button>Delete</button></a>
+                <button class="btn-delete" th:attr="data-id=${book.getId()}" >Delete</button>
             </td>
         </tr>
-
     </table>
+
+
+   <!-- <a th:each="i: ${#numbers.sequence(1, 10)}" th:text="${i}" th:classappend="${books.get(1).getId()} == ${i} ? 'active': ''"></a>-->
+
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('body').on('click', '.btn-delete', function () {
+                var data_id = $(this).attr("data-id");
+
+                if(confirm("Do you want to delete?")) {
+                    window.location = "http://localhost:1122/delete/" + data_id;
+                }
+            });
+        });
+    </script>
 
 </body>
 </html>

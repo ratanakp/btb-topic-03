@@ -9,4 +9,10 @@ public interface BookService {
     List<Book> getAll();
 
     Book findOne(Integer id);
+
+    boolean update(Book book);
+
+    boolean delete(Integer id);
+
+    boolean create(Book book);
 }
