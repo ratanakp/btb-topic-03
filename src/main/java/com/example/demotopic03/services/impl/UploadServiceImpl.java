@@ -35,8 +35,9 @@ public class UploadServiceImpl implements UploadService {
             folder = "";
         }
         File path = new File(SERVER_PATH + folder);
+
         if (!path.exists())
-            path.mkdir();
+            path.mkdirs();
 
         String filename = file.getOriginalFilename();
         String extension = filename.substring(filename.lastIndexOf('.') + 1);
@@ -50,16 +51,16 @@ public class UploadServiceImpl implements UploadService {
         } catch (IOException e) {
 
         }
-        return  folder + filename;
+        return folder + filename;
     }
 
     @Override
     public List<String> multipleFileUpload(List<MultipartFile> files, String folder) {
 
-            List<String> filenames = new ArrayList<>();
-            files.forEach(file -> {
-                filenames.add(this.singleFileUpload(file, folder));
-            });
+        List<String> filenames = new ArrayList<>();
+        files.forEach(file -> {
+            filenames.add(this.singleFileUpload(file, folder));
+        });
 
         return filenames;
     }

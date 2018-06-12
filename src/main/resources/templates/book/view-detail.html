@@ -5,20 +5,16 @@
     <title>View Detail</title>
 </head>
 <body>
-    <h2><u>View Book</u></h2>
+<h2><u>View Book</u></h2>
 
-    <th:block th:if="${book} != null" th:object="${book}">
-        ID: [[*{id}]]<br>
-        Title: [[*{title}]]<br>
-        Author: [[*{author}]]<br>
-        Publisher: [[*{publisher}]]<br>
-    </th:block>
+<th:block th:if="${book} != null" th:object="${book}">
+    ID: [[*{id}]]<br>
+    Title: [[*{title}]]<br>
+    Author: [[*{author}]]<br>
+    Publisher: [[*{publisher}]]<br>
+</th:block>
 
-    <h1 th:unless="${book}" style="color: red;">No book found!</h1>
-
-
-
-
+<h1 th:unless="${book}" style="color: red;">No book found!</h1>
 
 
 </body>

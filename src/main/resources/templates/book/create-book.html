@@ -5,18 +5,22 @@
     <title th:text="${isNew?'Create Book':'Update Book'}">Create Book</title>
 </head>
 <body>
-    <h1 th:text="${isNew?'Create Book':'Update Book'}">Create Book</h1>
-    <form th:action="${isNew?'/create/submit':'/update/submit'}" method="post" th:object="${book}" enctype="multipart/form-data">
-        ID: <input type="number" th:field="*{id}"> <span style="color: red;" th:if="${#fields.hasErrors()}" th:errors="*{id}">Error</span> <br>
-        Title: <input type="text" th:field="*{title}"><span style="color: red;" th:if="${#fields.hasErrors()}" th:text="${#fields.errors('title')}">Error</span> <br>
-        Author: <input type="text" th:field="*{author}"><span style="color: red;" th:if="${#fields.hasErrors()}" th:text="${#fields.errors('author')}">Error</span><br>
-        Publisher: <input type="text" th:field="*{publisher}"><br>
-        <input type="text" th:field="*{thumbnail}" hidden>
+<h1 th:text="${isNew?'Create Book':'Update Book'}">Create Book</h1>
+<form th:action="${isNew?'/create/submit':'/update/submit'}" method="post" th:object="${book}"
+      enctype="multipart/form-data">
+    ID: <input type="number" th:field="*{id}"> <span style="color: red;" th:if="${#fields.hasErrors()}"
+                                                     th:errors="*{id}">Error</span> <br>
+    Title: <input type="text" th:field="*{title}"><span style="color: red;" th:if="${#fields.hasErrors()}"
+                                                        th:text="${#fields.errors('title')}">Error</span> <br>
+    Author: <input type="text" th:field="*{author}"><span style="color: red;" th:if="${#fields.hasErrors()}"
+                                                          th:text="${#fields.errors('author')}">Error</span><br>
+    Publisher: <input type="text" th:field="*{publisher}"><br>
+    <input type="text" th:field="*{thumbnail}" hidden>
 
-        <input type="file" name="file"> <br>
+    <input type="file" name="file"> <br>
 
 
-        <input type="submit" value="Submit">
-    </form>
+    <input type="submit" value="Submit">
+</form>
 </body>
 </html>

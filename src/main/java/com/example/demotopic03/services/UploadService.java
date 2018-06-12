@@ -12,11 +12,12 @@ public interface UploadService {
 
 
     String upload(MultipartFile file, String folder);
+
     List<String> upload(List<MultipartFile> files, String folder);
 
     List<String> upload(List<MultipartFile> files);
-    String upload(MultipartFile file);
 
+    String upload(MultipartFile file);
 
 
 }
