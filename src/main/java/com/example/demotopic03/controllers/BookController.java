@@ -148,4 +148,10 @@ public class BookController {
     }
 
 
+    @GetMapping("/index/m")
+    public String indexMaterialize() {
+        return "book/index-m";
+    }
+
+
 }
