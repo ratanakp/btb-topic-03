@@ -19,7 +19,7 @@ public class MultipleLanguageConfiguration implements WebMvcConfigurer {
     @Description("Set Default Language")
     public LocaleResolver localeResolver() {
         SessionLocaleResolver sessionLocaleResolver = new SessionLocaleResolver();
-        sessionLocaleResolver.setDefaultLocale(new Locale("th"));
+        sessionLocaleResolver.setDefaultLocale(new Locale("km"));
         return sessionLocaleResolver;
 
     }
