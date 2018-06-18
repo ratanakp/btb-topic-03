@@ -40,26 +40,36 @@
 
 <nav class="light-blue lighten-1 " role="navigation"
      style="background: linear-gradient(40deg,#2096ff,#05ffa3)!important">
-    <div class="nav-wrapper container"><a id="logo-container" href="#" class="brand-logo"><img
+    <div class="nav-wrapper container">
+        <a id="logo-container" href="#" class="brand-logo">
+            <img
             src="/static/images/download.png" alt="Logo" style="width: 50px; height: 50px;"></a>
-        <ul class="right hide-on-med-and-down">
+            <ul class="right hide-on-med-and-down">
+                <li>
+                    <!-- Dropdown Trigger -->
+                    <a class='dropdown-trigger btn' href='#' data-target='dropdown1'>Language</a>
+
+                    <!-- Dropdown Structure -->
+                    <ul id='dropdown1' class='dropdown-content'>
+                        <li><a href="/?lang=km">Khmer</a></li>
+                        <li><a href="/?lang=en">English</a></li>
+                        <li><a href="/?lang=th">Thai</a></li>
+                    </ul>
+                </li>
+            </ul>
+
+        <ul id="nav-mobile" class="sidenav">
             <li>
                 <!-- Dropdown Trigger -->
                 <a class='dropdown-trigger btn' href='#' data-target='dropdown1'>Language</a>
 
                 <!-- Dropdown Structure -->
-                <ul id='dropdown1' class='dropdown-content'>
+                <ul id='dropdown2' class='dropdown-content'>
                     <li><a href="/?lang=km">Khmer</a></li>
                     <li><a href="/?lang=en">English</a></li>
                     <li><a href="/?lang=th">Thai</a></li>
                 </ul>
-
-
             </li>
-        </ul>
-
-        <ul id="nav-mobile" class="sidenav">
-            <li><a href="#">Navbar Link</a></li>
         </ul>
         <a href="#" data-target="nav-mobile" class="sidenav-trigger"><i class="material-icons">menu</i></a>
     </div>
