@@ -102,6 +102,7 @@
                 <th>Title</th>
                 <th>Author</th>
                 <th>Publisher</th>
+                <th>Category</th>
                 <th style="width: 15%" class="center center-align">Action</th>
             </tr>
             </thead>
@@ -117,6 +118,7 @@
                 </td>
                 <td th:text="*{author}">Author</td>
                 <td th:text="*{publisher}">Publisher</td>
+                <td th:text="*{category.name}">Category</td>
                 <td class="center center-align">
 
                     <a th:href="@{/view/{id}(id=${book.getId()})}"

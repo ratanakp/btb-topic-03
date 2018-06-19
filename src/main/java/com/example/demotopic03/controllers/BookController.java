@@ -2,7 +2,9 @@ package com.example.demotopic03.controllers;
 
 
 import com.example.demotopic03.models.Book;
+import com.example.demotopic03.models.Category;
 import com.example.demotopic03.services.BookService;
+import com.example.demotopic03.services.CategoryService;
 import com.example.demotopic03.services.UploadService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,13 +21,15 @@ import java.util.List;
 public class BookController {
 
     private BookService bookService;
+    private CategoryService categoryService;
 
     @Autowired
     private UploadService uploadService;
 
     @Autowired
-    public BookController(BookService bookService) {
+    public BookController(BookService bookService, CategoryService categoryService) {
         this.bookService = bookService;
+        this.categoryService = categoryService;
     }
 
     @GetMapping({"/index", "/", "home"})
@@ -63,6 +67,10 @@ public class BookController {
         modelMap.addAttribute("isNew", false);
         modelMap.addAttribute("book", book);
 
+        List<Category> categories = this.categoryService.getAll();
+
+        modelMap.addAttribute("categories", categories);
+
         return "book/create-book";
     }
 
@@ -97,8 +105,10 @@ public class BookController {
 
     @GetMapping("/create")
     public String create(Model model) {
+        List<Category> categories = this.categoryService.getAll();
 
         model.addAttribute("isNew", true);
+        model.addAttribute("categories", categories);
         model.addAttribute("book", new Book());
 
         return "book/create-book";

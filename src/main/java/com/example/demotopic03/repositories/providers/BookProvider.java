@@ -8,8 +8,9 @@ public class BookProvider {
     public String getAllProvider() {
         return new SQL(){{
             SELECT("*");
-            FROM("tb_book");
-            ORDER_BY("id desc");
+            FROM("tb_book b");
+            INNER_JOIN("tb_category c ON b.cate_id = c.id");
+            ORDER_BY("b.id desc");
         }}.toString();
     }
 
@@ -21,6 +22,7 @@ public class BookProvider {
             VALUES("author", "#{author}");
             VALUES("publisher", "#{publisher}");
             VALUES("thumbnail", "#{thumbnail}");
+            VALUES("cate_id", "#{category.id}");
         }}.toString();
 
     }

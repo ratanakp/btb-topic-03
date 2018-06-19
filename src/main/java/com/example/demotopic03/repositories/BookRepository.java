@@ -13,15 +13,23 @@ public interface BookRepository {
     @SelectProvider(type = BookProvider.class, method = "getAllProvider")
     @Results({
             @Result(column = "id", property = "id"),
-            @Result(column = "title", property = "title")
+            @Result(column = "title", property = "title"),
+            @Result(column = "cate_id", property = "category.id"),
+            @Result(column = "name", property = "category.name")
     })
     List<Book> getAll();
 
-    @Select("select * from tb_book where id=#{id}")
+    @Select("select * from tb_book b inner join tb_category c ON b.cate_id = c.id where b.id=#{id}")
+    @Results({
+            @Result(column = "id", property = "id"),
+            @Result(column = "title", property = "title"),
+            @Result(column = "cate_id", property = "category.id"),
+            @Result(column = "name", property = "category.name")
+    })
     Book findOne(@Param("id") Integer id);
 
 
-    @Update("update tb_book set title=#{title}, author=#{author}, publisher=#{publisher}, thumbnail=#{thumbnail} where id=#{id}")
+    @Update("update tb_book set title=#{title}, author=#{author}, publisher=#{publisher}, thumbnail=#{thumbnail}, cate_id=#{category.id} where id=#{id}")
     boolean update(Book book);
 
 

@@ -20,7 +20,7 @@ public class Book {
 
     private String thumbnail;
 
-    private Category category;
+    private Category category = new Category();
 
     public Book() {
     }
