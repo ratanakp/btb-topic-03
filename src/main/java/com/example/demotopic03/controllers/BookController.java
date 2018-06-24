@@ -7,7 +7,6 @@ import com.example.demotopic03.models.filters.BookFilter;
 import com.example.demotopic03.services.BookService;
 import com.example.demotopic03.services.CategoryService;
 import com.example.demotopic03.services.UploadService;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -73,6 +72,10 @@ public class BookController {
         System.out.println(book);
         modelMap.addAttribute("categories", categoryList);
 
+        List<Category> categories = this.categoryService.getAll();
+
+        modelMap.addAttribute("categories", categories);
+
         return "book/create-book";
     }
 
@@ -107,12 +110,14 @@ public class BookController {
 
     @GetMapping("/create")
     public String create(Model model) {
+        List<Category> categories = this.categoryService.getAll();
 
         List<Category> categoryList = this.categoryService.getAll();
 
         System.out.println(categoryList);
 
         model.addAttribute("isNew", true);
+        model.addAttribute("categories", categories);
         model.addAttribute("book", new Book());
 
         model.addAttribute("categories", categoryList);

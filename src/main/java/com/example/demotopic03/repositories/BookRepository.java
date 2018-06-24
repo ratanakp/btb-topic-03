@@ -20,9 +20,12 @@ public interface BookRepository {
     })
     List<Book> getAll();
 
-    @Select("select * from tb_book where id=#{id}")
+    @Select("select * from tb_book b inner join tb_category c ON b.cate_id = c.id where b.id=#{id}")
     @Results({
-            @Result(column = "cate_id", property = "category.id")
+            @Result(column = "id", property = "id"),
+            @Result(column = "title", property = "title"),
+            @Result(column = "cate_id", property = "category.id"),
+            @Result(column = "name", property = "category.name")
     })
     Book findOne(@Param("id") Integer id);
 

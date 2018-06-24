@@ -19,10 +19,8 @@
     Category:
     <select th:name="category.id" id="category_id">
 
-        <option th:each="category: ${categories}" th:object="${category}" th:value="*{id}" th:text="*{name}"></option>
-
-    </select><br>
-
+        <option th:each="category: ${categories}" th:object="${category}" th:value="*{id}" th:text="*{name}">Category Name</option>
+    </select>
 
     <input type="text" th:field="*{thumbnail}" hidden>
 
@@ -33,6 +31,7 @@
 
 <script src="/static/js/jquery-2.1.1.min.js"></script>
 <script th:inline="javascript">
+
     /*<![CDATA[*/
 
     var cate_id = /*[[${book.category.id}]]*/ 0;
@@ -42,8 +41,6 @@
 
     /*]]>*/
 
-
-    var meme = [[${book.category.id}}]];
 
 
     $(document).ready(function () {
@@ -62,7 +59,7 @@
                 }
             });
         })();
-    })
+    });
 
 </script>
 </body>

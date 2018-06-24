@@ -15,4 +15,5 @@ public interface CategoryRepository {
 
     @Select("select count(*) from tb_category")
     Integer count();
+
 }
