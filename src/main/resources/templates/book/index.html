@@ -58,19 +58,19 @@
                 </li>
             </ul>
 
-        <ul id="nav-mobile" class="sidenav">
-            <li>
-                <!-- Dropdown Trigger -->
-                <a class='dropdown-trigger btn' href='#' data-target='dropdown1'>Language</a>
+            <ul id="nav-mobile" class="sidenav">
+                <li>
+                    <!-- Dropdown Trigger -->
+                    <a class='dropdown-trigger btn' href='#' data-target='dropdown2'>Language</a>
 
-                <!-- Dropdown Structure -->
-                <ul id='dropdown2' class='dropdown-content'>
-                    <li><a href="/?lang=km">Khmer</a></li>
-                    <li><a href="/?lang=en">English</a></li>
-                    <li><a href="/?lang=th">Thai</a></li>
-                </ul>
-            </li>
-        </ul>
+                    <!-- Dropdown Structure -->
+                    <ul id='dropdown2' class='dropdown-content'>
+                        <li><a href="/?lang=km">Khmer</a></li>
+                        <li><a href="/?lang=en">English</a></li>
+                        <li><a href="/?lang=th">Thai</a></li>
+                    </ul>
+                </li>
+            </ul>
         <a href="#" data-target="nav-mobile" class="sidenav-trigger"><i class="material-icons">menu</i></a>
     </div>
 </nav>
@@ -102,6 +102,7 @@
                 <th>Title</th>
                 <th>Author</th>
                 <th>Publisher</th>
+                <th>Category</th>
                 <th style="width: 15%" class="center center-align">Action</th>
             </tr>
             </thead>
@@ -117,6 +118,7 @@
                 </td>
                 <td th:text="*{author}">Author</td>
                 <td th:text="*{publisher}">Publisher</td>
+                <td th:text="*{category.name}">Publisher</td>
                 <td class="center center-align">
 
                     <a th:href="@{/view/{id}(id=${book.getId()})}"
@@ -135,10 +137,11 @@
             <!--Table body-->
 
         </table>
+        <br>
         <!--Table-->
         <ul class="pagination right pagination-circle">
             <li class="disabled"><a href="#!"><i class="material-icons">chevron_left</i></a></li>
-            <li class="active purple"><a href="#!">1</a></li>
+            <li class="active deep-purple"><a href="#!">1</a></li>
             <li class="waves-effect waves-purple"><a href="#!">2</a></li>
             <li class="waves-effect waves-purple"><a href="#!">3</a></li>
             <li class="waves-effect waves-purple"><a href="#!">4</a></li>
@@ -169,7 +172,7 @@
     <br>
 </div>
 
-<footer class="page-footer" style="background: #2E2E2E!important">
+<footer class="page-footer" style="background: #2E2E2E!important;">
     <div class="container">
         <div class="row">
             <div class="col l6 s12">
@@ -190,7 +193,7 @@
     </div>
     <div class="footer-copyright">
         <div class="container">
-            © 2018 Copyright Text
+            © 2018 Copyright
             <a class="grey-text text-lighten-4 right" href="#!">More Links</a>
         </div>
     </div>

@@ -1,8 +1,10 @@
 package com.example.demotopic03.services.impl;
 
 import com.example.demotopic03.models.Book;
+import com.example.demotopic03.models.filters.BookFilter;
 import com.example.demotopic03.repositories.BookRepository;
 import com.example.demotopic03.services.BookService;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -42,5 +44,16 @@ public class BookServiceImpl implements BookService {
     @Override
     public boolean create(Book book) {
         return this.bookRepository.create(book);
+    }
+
+
+    @Override
+    public List<Book> bookFilter(BookFilter bookFilter) {
+        return this.bookRepository.bookFilter(bookFilter);
+    }
+
+    @Override
+    public Integer count() {
+        return this.bookRepository.count();
     }
 }

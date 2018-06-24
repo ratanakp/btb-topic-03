@@ -15,12 +15,55 @@
     Author: <input type="text" th:field="*{author}"><span style="color: red;" th:if="${#fields.hasErrors()}"
                                                           th:text="${#fields.errors('author')}">Error</span><br>
     Publisher: <input type="text" th:field="*{publisher}"><br>
+
+    Category:
+    <select th:name="category.id" id="category_id">
+
+        <option th:each="category: ${categories}" th:object="${category}" th:value="*{id}" th:text="*{name}"></option>
+
+    </select><br>
+
+
     <input type="text" th:field="*{thumbnail}" hidden>
 
     <input type="file" name="file"> <br>
 
-
     <input type="submit" value="Submit">
 </form>
+
+<script src="/static/js/jquery-2.1.1.min.js"></script>
+<script th:inline="javascript">
+    /*<![CDATA[*/
+
+    var cate_id = /*[[${book.category.id}]]*/ 0;
+    console.log(cate_id);
+
+    var cate_ids = /*[[${categories}]]*/ null;
+
+    /*]]>*/
+
+
+    var meme = [[${book.category.id}}]];
+
+
+    $(document).ready(function () {
+        $('#category_id').on('change', function () {
+            alert($(this).val());
+            console.log(cate_ids);
+        });
+
+        (function () {
+            $.each(cate_ids, function (index, cate) {
+                console.log(cate.id);
+
+                if (cate.id == cate_id) {
+                    $('#category_id option[value="' + cate_id + '"]').attr('selected', 'selected');
+                    alert(1000)
+                }
+            });
+        })();
+    })
+
+</script>
 </body>
 </html>

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/master}">
+
+<head>
+    <!-- Required meta tags always come first -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Dashboard</title>
+
+
+    <style layout:fragment="style">
+
+        .chip.chip-lg {
+            height: 52px;
+            line-height: 52px;
+            border-radius: 26px;
+        }
+
+    </style>
+</head>
+
+<body>
+
+
+<!--Main layout-->
+<main  layout:fragment="content">
+
+    <div class="container-fluid text-center">
+
+        <!-- Section: Pricing v.3 -->
+        <section class="text-center my-5">
+            <!-- Grid row -->
+            <div class="row">
+
+                <!-- Grid column -->
+                <div class="col-lg-4 col-md-12 mb-lg-0 mb-4">
+
+                    <!-- Card -->
+                    <div class="card aqua-gradient white-text">
+
+                        <!-- Content -->
+                        <div class="card-body">
+
+                            <!-- Offer -->
+                            <h5 class="mb-4" th:text="#{book}">Book</h5>
+                            <div class="d-flex justify-content-center">
+                                <div class="card-circle d-flex justify-content-center align-items-center">
+                                    <i class="fa fa-book"></i>
+                                </div>
+                            </div>
+
+                            <!-- Price -->
+                            <h1 class="font-weight-bold my-4" th:text="${count_book}">0</h1>
+
+                        </div>
+                        <!-- Content -->
+
+                    </div>
+                    <!-- Card -->
+
+                </div>
+                <!-- Grid column -->
+
+                <!-- Grid column -->
+                <div class="col-lg-4 col-md-6 mb-md-0 mb-4">
+
+                    <!-- Card -->
+                    <div class="card purple-gradient">
+
+                        <!-- Content -->
+                        <div class="card-body white-text">
+
+                            <!-- Offer -->
+                            <h5 class="mb-4" th:text="#{category}">Category</h5>
+                            <div class="d-flex justify-content-center">
+                                <div class="card-circle d-flex justify-content-center align-items-center">
+                                    <i class="fa fa-cubes"></i>
+                                </div>
+                            </div>
+
+                            <!--Price -->
+                            <h1 class="font-weight-bold my-4" th:text="${count_category}">0</h1>
+
+                        </div>
+                        <!-- Content -->
+
+                    </div>
+                    <!-- Card -->
+
+                </div>
+                <!-- Grid column -->
+
+            </div>
+            <!-- Grid row -->
+
+        </section>
+        <!-- Section: Pricing v.3 -->
+
+        <div style="font-weight: bold; font-size: 30px" class="chip chip-lg indigo lighten-4 white-text peach-gradient text-right" th:text="${#dates.format(date, 'dd-MMM-yyyy HH:mm a')}">
+            Date
+        </div>
+
+    </div>
+
+</main>
+<!--/Main layout-->
+
+</body>
+
+</html>

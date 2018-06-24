@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+
+<!-- Sidebar navigation -->
+<div id="slide-out" class="side-nav sn-bg-4 fixed" th:fragment="fr-sidebar">
+    <ul class="custom-scrollbar">
+        <!-- Logo -->
+        <li>
+            <div class="logo-wrapper waves-light">
+                <a href="#"><img src="/static/img/new-logo.png"
+                                 class="img-fluid flex-center"></a>
+            </div>
+        </li>
+        <!--/. Logo -->
+        <!--Social-->
+        <li>
+            <ul class="social">
+                <li><a href="#" class="icons-sm fb-ic"><i class="fa fa-facebook"> </i></a></li>
+                <li><a href="#" class="icons-sm pin-ic"><i class="fa fa-pinterest"> </i></a></li>
+                <li><a href="#" class="icons-sm gplus-ic"><i class="fa fa-google-plus"> </i></a></li>
+                <li><a href="#" class="icons-sm tw-ic"><i class="fa fa-twitter"> </i></a></li>
+            </ul>
+        </li>
+        <!--/Social-->
+        <!--Search Form-->
+        <li>
+            <form class="search-form" role="search">
+                <div class="form-group md-form mt-0 pt-1 waves-light">
+                    <input type="text" class="form-control" placeholder="Search">
+                </div>
+            </form>
+        </li>
+        <!--/.Search Form-->
+
+        <li>
+            <a href="/dashboard" style="text-decoration: none; color: white;" class="waves-effect arrow-r active">
+                <i class="fa fa-dashboard"></i> Dashboard
+            </a>
+        </li>
+
+        <!-- Side navigation links -->
+        <li>
+            <ul class="collapsible collapsible-accordion">
+                <li>
+                    <a class="collapsible-header waves-effect arrow-r"><i class="fa fa-book"> / <i class="fa fa-users"></i>
+                    </i>Books/Users<i class="fa fa-angle-down rotate-icon"></i>
+                    </a>
+
+                    <div class="collapsible-body">
+                        <ul class="list-unstyled">
+                            <li><a href="/book" class="waves-effect"><i class="fa fa-book"></i>&nbsp; All Books</a></li>
+
+                            <li><a href="#" class="waves-effect"><i class="fa fa-users"></i>&nbsp; All Users</a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+
+                <!--<li>
+                    <a class="collapsible-header waves-effect arrow-r"><i class="fa fa-book"> / <i class="fa fa-users"></i>
+                    </i>Books/Users<i class="fa fa-angle-down rotate-icon"></i>
+                    </a>
+                </li>-->
+
+            </ul>
+        </li>
+        <!--/. Side navigation links -->
+    </ul>
+    <div class="sidenav-bg mask-strong"></div>
+</div>
+<!--/. Sidebar navigation -->
+
+
+</body>
+</html>

@@ -20,11 +20,11 @@ public class Book {
 
     private String thumbnail;
 
-    private Category category;
+    private Category category = new Category();
 
     public Book() {
     }
-    
+
     public Book(@NotNull Integer id, @Size(min = 5, max = 255) @Email String title, String author, String publisher, String thumbnail, Category category) {
         this.id = id;
         this.title = title;

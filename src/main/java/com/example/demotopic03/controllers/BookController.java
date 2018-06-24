@@ -2,8 +2,12 @@ package com.example.demotopic03.controllers;
 
 
 import com.example.demotopic03.models.Book;
+import com.example.demotopic03.models.Category;
+import com.example.demotopic03.models.filters.BookFilter;
 import com.example.demotopic03.services.BookService;
+import com.example.demotopic03.services.CategoryService;
 import com.example.demotopic03.services.UploadService;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,16 +23,18 @@ import java.util.List;
 public class BookController {
 
     private BookService bookService;
+    private CategoryService categoryService;
 
     @Autowired
     private UploadService uploadService;
 
     @Autowired
-    public BookController(BookService bookService) {
+    public BookController(BookService bookService, CategoryService categoryService) {
         this.bookService = bookService;
+        this.categoryService = categoryService;
     }
 
-    @GetMapping({"/index", "/", "home"})
+    @GetMapping({"/book", "home"})
 //    @RequestMapping(value = {"/index", "/", "/home"}, method = RequestMethod.GET)
     public String index(ModelMap model) {
 
@@ -36,7 +42,7 @@ public class BookController {
 
         model.addAttribute("books", bookList);
 
-        return "book/index";
+        return "book/all-book";
     }
 
 
@@ -60,8 +66,12 @@ public class BookController {
 
         Book book = this.bookService.findOne(book_id);
 
+        List<Category> categoryList = this.categoryService.getAll();
+
         modelMap.addAttribute("isNew", false);
         modelMap.addAttribute("book", book);
+        System.out.println(book);
+        modelMap.addAttribute("categories", categoryList);
 
         return "book/create-book";
     }
@@ -80,7 +90,7 @@ public class BookController {
 
         this.bookService.update(book);
 
-        return "redirect:/index";
+        return "redirect:/book";
     }
 
 
@@ -91,15 +101,21 @@ public class BookController {
 
         this.bookService.delete(id);
 
-        return "redirect:/index";
+        return "redirect:/book";
     }
 
 
     @GetMapping("/create")
     public String create(Model model) {
 
+        List<Category> categoryList = this.categoryService.getAll();
+
+        System.out.println(categoryList);
+
         model.addAttribute("isNew", true);
         model.addAttribute("book", new Book());
+
+        model.addAttribute("categories", categoryList);
 
         return "book/create-book";
     }
@@ -118,7 +134,7 @@ public class BookController {
 
         System.out.println(book);
         this.bookService.create(book);
-        return "redirect:/index";
+        return "redirect:/book";
     }
 
 
@@ -137,7 +153,6 @@ public class BookController {
 
         List<String> filenames = this.uploadService.upload(files, "test/");
 
-
         return "";
     }
 
@@ -145,6 +160,17 @@ public class BookController {
     @GetMapping("/index/m")
     public String indexMaterialize() {
         return "index";
+    }
+
+
+
+
+
+    @ResponseBody
+    @RequestMapping("/book/filter")
+    List<Book> bookFilter(BookFilter bookFilter) {
+        System.out.println(bookFilter);
+        return this.bookService.bookFilter(bookFilter);
     }
 
 
