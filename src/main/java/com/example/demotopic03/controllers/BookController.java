@@ -45,6 +45,45 @@ public class BookController {
     }
 
 
+    @GetMapping("/create")
+    public String create(Model model) {
+        List<Category> categoryList = this.categoryService.getAll();
+
+        System.out.println(categoryList);
+
+        model.addAttribute("isNew", true);
+        model.addAttribute("book", new Book());
+
+        model.addAttribute("categories", categoryList);
+
+        return "book/add-book";
+    }
+
+    @PostMapping("/create/submit")
+    public String create(@Valid Book book, BindingResult bindingResult, Model model, MultipartFile file) {
+
+        System.out.println(book);
+        if (bindingResult.hasErrors()) {
+
+            List<Category> categoryList = this.categoryService.getAll();
+
+            model.addAttribute("isNew", true);
+            model.addAttribute("categories", categoryList);
+            return "book/add-book";
+        }
+
+        String filename = this.uploadService.upload(file, "class/");
+
+        if (filename != null)
+            book.setThumbnail("/images-btb/" + filename);
+
+
+        System.out.println(book);
+        this.bookService.create(book);
+        return "redirect:/book";
+    }
+
+
     @GetMapping("view/{id}")
     public String view(@PathVariable("id") Integer id, Model model) {
         System.out.println("ID: " + id);
@@ -76,13 +115,24 @@ public class BookController {
 
         modelMap.addAttribute("categories", categories);
 
-        return "book/create-book";
+        return "book/add-book";
     }
 
 
     @PostMapping("update/submit")
-    public String updateSubmit(@ModelAttribute Book book, MultipartFile file) {
+    public String updateSubmit(@Valid Book book, BindingResult bindingResult, Model model, MultipartFile file) {
         System.out.println(book);
+
+        Book findBook = this.bookService.findOne(book.getId());
+        List<Category> categories = this.categoryService.getAll();
+
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("isNew", false);
+//            model.addAttribute("book", findBook);
+            model.addAttribute("categories", categories);
+
+            return "book/add-book";
+        }
 
 
         String filename = this.uploadService.singleFileUpload(file, "class/");
@@ -104,41 +154,6 @@ public class BookController {
 
         this.bookService.delete(id);
 
-        return "redirect:/book";
-    }
-
-
-    @GetMapping("/create")
-    public String create(Model model) {
-        List<Category> categories = this.categoryService.getAll();
-
-        List<Category> categoryList = this.categoryService.getAll();
-
-        System.out.println(categoryList);
-
-        model.addAttribute("isNew", true);
-        model.addAttribute("categories", categories);
-        model.addAttribute("book", new Book());
-
-        model.addAttribute("categories", categoryList);
-
-        return "book/create-book";
-    }
-
-    @PostMapping("/create/submit")
-    public String create(@Valid Book book, BindingResult bindingResult, MultipartFile file) {
-
-        String filename = this.uploadService.upload(file, "class/");
-
-        book.setThumbnail("/images-btb/" + filename);
-
-
-        if (bindingResult.hasErrors()) {
-            return "book/create-book";
-        }
-
-        System.out.println(book);
-        this.bookService.create(book);
         return "redirect:/book";
     }
 
@@ -166,9 +181,6 @@ public class BookController {
     public String indexMaterialize() {
         return "index";
     }
-
-
-
 
 
     @ResponseBody

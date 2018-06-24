@@ -6,11 +6,9 @@ import java.util.List;
 
 public class Book {
 
-    @NotNull
     private Integer id;
 
     @Size(min = 5, max = 255)
-    @Email
     private String title;
 
     //    @NotNull(message = "{1} meme Custom!")
@@ -20,12 +18,13 @@ public class Book {
 
     private String thumbnail;
 
-    private Category category = new Category();
+    @NotNull
+    private Category category;
 
     public Book() {
     }
 
-    public Book(@NotNull Integer id, @Size(min = 5, max = 255) @Email String title, String author, String publisher, String thumbnail, Category category) {
+    public Book(Integer id, @Size(min = 5, max = 255) String title, String author, String publisher, String thumbnail, @NotNull Category category) {
         this.id = id;
         this.title = title;
         this.author = author;

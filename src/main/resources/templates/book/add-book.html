@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/master}"
+
+>
+
+<head>
+    <!-- Required meta tags always come first -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title th:text="#{application.name}">BMS</title>
+
+    <style layout:fragment="style">
+        .tempting-azure-gradient {
+            background-image: linear-gradient(120deg, #84fab0 0%, #8fd3f4 100%);
+        }
+
+
+        tr td{
+            vertical-align: middle !important;
+        }
+
+        .select-wrapper input.select-dropdown {
+            margin: 0;
+        }
+
+        .trigger {
+            padding: 1px 10px;
+            font-size: 12px;
+            font-weight: 400;
+            border-radius: 10px;
+            background-color: #eee;
+            color: #212121;
+            display: inline-block;
+            margin: 2px 5px;
+        }
+
+        .hoverable, .trigger {
+            transition: box-shadow 0.55s;
+            box-shadow: 0;
+        }
+
+        .hoverable:hover, .trigger:hover {
+            transition: box-shadow 0.45s;
+            box-shadow: 0 8px 17px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        }
+
+
+    </style>
+
+
+</head>
+
+<body>
+
+<!--Main layout-->
+<main layout:fragment="content">
+
+    <div class="container-fluid text-center">
+
+
+
+
+        <div class="card card-cascade narrower">
+
+            <!--Card image-->
+            <div class="view view-cascade gradient-card-header purple-gradient narrower py-2 mx-4 mb-3 d-flex justify-content-between align-items-center">
+
+
+                <div>
+
+                </div>
+
+                <span style="font-size: 20px" class="white-text text-center">[[${isNew}?'Create Book':'Update Book']] &nbsp;&nbsp; <i class="fa fa-book"></i></span>
+
+                <div>
+
+                </div>
+
+            </div>
+            <!--/Card image-->
+
+            <div class="px-4">
+
+                <!-- Extended material form grid -->
+                <form class="md-form" th:action="${isNew} ? '/create/submit' : '/update/submit'" method="post" th:object="${book}"
+                      enctype="multipart/form-data">
+                    <!-- Grid row -->
+                    <div class="form-row">
+                        <!-- Grid column -->
+                        <div class="col-md-12">
+                            <!-- Material input -->
+                            <div class="md-form form-group">
+                                <input type="text" th:field="*{title}" class="form-control" id="inputTitle4MD">
+                                <label for="inputTitle4MD">Book Title</label>
+                                <span class="text-left left float-left" style="color: red;" th:if="${#fields.hasErrors('title')}" th:text="${#fields.errors('title')[0]}"></span>
+                            </div>
+                        </div>
+                        <!-- Grid column -->
+
+                        <!-- Grid column -->
+                        <div class="col-md-12">
+                            <!-- Material input -->
+                            <div class="md-form form-group">
+                                <!--Blue select-->
+                                <select class="mdb-select colorful-select dropdown-default" th:name="category.id" id="category_id">
+                                    <!--<option disabled th:unless="${isNew}">Choose Your Category</option>-->
+                                    <option disabled th:if="${isNew}" selected>Choose Your Category</option>
+                                    <th:block>
+                                        <option th:each="category: ${categories}" th:object="${category}" th:value="*{id}" th:text="*{name}"></option>
+                                    </th:block>
+
+                                </select>
+                                <label>Category</label>
+                                <span class="text-left left float-left" style="color: red;" th:if="${#fields.hasErrors('category')}" th:text="${#fields.errors('category')[0]}">Error Category</span>
+                                <!--/Blue select-->
+                            </div>
+                        </div>
+                        <!-- Grid column -->
+
+                        <!-- Grid column -->
+                        <div class="col-md-6">
+                            <!-- Material input -->
+                            <div class="md-form form-group">
+                                <input th:field="*{author}" type="text" class="form-control" id="inputAuthor4MD">
+                                <label for="inputAuthor4MD">Author</label>
+                            </div>
+                        </div>
+                        <!-- Grid column -->
+
+                        <!-- Grid column -->
+                        <div class="col-md-6">
+                            <!-- Material input -->
+                            <div class="md-form form-group">
+                                <input th:field="*{publisher}" type="text" class="form-control" id="inputPublisher4MD">
+                                <label for="inputPublisher4MD">Publisher</label>
+                            </div>
+                        </div>
+                        <!-- Grid column -->
+
+                        <!-- Grid column -->
+                        <div class="col-md-12">
+                            <!-- Material input -->
+                            <div class="md-form form-group file-field">
+                                <div class="btn btn-outline-default btn-rounded waves-effect btn-sm float-left">
+                                    <span>Choose file</span>
+                                    <input type="file" name="file">
+                                </div>
+                                <div class="file-path-wrapper">
+                                    <input class="file-path validate" type="text" placeholder="Upload your file">
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Grid column -->
+
+                    </div>
+                    <!-- Grid row -->
+
+                    <input type="hidden" th:field="*{thumbnail}" hidden><br>
+                    <input type="hidden" th:field="*{id}">
+
+                    <button type="submit" class="btn btn-block btn-primary btn-md"><i class="fa fa-edit"></i>&nbsp;[[${isNew ? 'Create' : 'Update'}]]</button>
+                    <span class="mx-4"></span>
+                </form>
+                <!-- Extended material form grid -->
+
+
+
+            </div>
+        </div>
+        <hr>
+
+
+    </div>
+
+</main>
+<!--/Main layout-->
+
+</body>
+
+<script layout:fragment="script" th:inline="javascript">
+    /*<![CDATA[*/
+    var book_cate_id = /*[[${book.category.id}]]*/ null;
+    var categories = /*[[${categories}]]*/ null;
+
+    console.log(book_cate_id);
+    // console.log(categories);
+    /*]]>*/
+
+
+    $(document).ready(function () {
+        $('input#input_text, textarea#textarea1').characterCounter();
+
+
+        $.each(categories, function (index, category) {
+            // console.log(category);
+            if (book_cate_id == category.id) {
+                $('#category_id option[value="' + book_cate_id + '"]').attr('selected', 'selected');
+            }
+        })
+    });
+
+</script>
+
+
+</html>
