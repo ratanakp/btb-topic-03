@@ -66,17 +66,24 @@
                 <!--Grid column-->
                 <div class="col-lg-10 col-md-12">
 
-                    <form class="form-row">
+                    <form class="form-row" method="get" id="search-form">
+                        <!--<form class="form-row" action="/book" method="get">-->
                         <div class="col-lg-6 col-md-12">
-                            <select class="mdb-select colorful-select dropdown-secondary mx-2">
+                            <select id="cate-id" name="cateId"
+                                    class="mdb-select colorful-select dropdown-secondary mx-2">
                                 <option value="" disabled selected>Filter By Category</option>
                                 <option value="">All Category</option>
+                                <option th:each="category  : ${categories}" th:value="${category.id}"
+                                        th:text="${category.name}">Category Name
+                                </option>
                             </select>
                         </div>
 
                         <div class="col-lg-6 col-md-12">
                             <div class="form-inline md-form mt-2 ml-2">
-                                <input class="form-control my-0" type="text" placeholder="Search" style="width: 88%">
+                                <input id="book-title" name="bookTitle" class="form-control my-0" type="text"
+                                       placeholder="Search" style="width: 88%">
+
                                 <button type="submit" class="btn btn-sm btn-primary ml-2 px-1 btn-block"
                                         style="width: 9%"><i
                                         class="fa fa-search"></i></button>
@@ -101,27 +108,13 @@
             <!--Card image-->
             <div class="view view-cascade gradient-card-header purple-gradient narrower py-2 mx-4 mb-3 d-flex justify-content-between align-items-center">
 
-                <!--<div>
-                    <button type="button" class="btn btn-outline-white btn-rounded btn-sm px-2"><i
-                            class="fa fa-th-large mt-0"></i></button>
-                    <button type="button" class="btn btn-outline-white btn-rounded btn-sm px-2"><i
-                            class="fa fa-columns mt-0"></i></button>
-                </div>-->
+
                 <div>
 
                 </div>
 
                 <span style="font-size: 20px" class="white-text text-center">List of All Books &nbsp;&nbsp; <i
                         class="fa fa-book"></i></span>
-
-                <!--<div>
-                    <button type="button" class="btn btn-outline-white btn-rounded btn-sm px-2"><i
-                            class="fa fa-pencil mt-0"></i></button>
-                    <button type="button" class="btn btn-outline-white btn-rounded btn-sm px-2"><i
-                            class="fa fa-remove mt-0"></i></button>
-                    <button type="button" class="btn btn-outline-white btn-rounded btn-sm px-2"><i
-                            class="fa fa-info-circle mt-0"></i></button>
-                </div>-->
                 <div>
 
                 </div>
@@ -133,7 +126,7 @@
 
                 <div class="table" style="margin-bottom: 0px;">
                     <!--Table-->
-                    <table class="table table-hover mb-0" th:if="${books.size()} > 0">
+                    <table id="table-id" class="table table-hover mb-0" th:if="${books.size()} > 0">
 
                         <!--Table head-->
                         <thead>
@@ -250,16 +243,90 @@
 </body>
 <script layout:fragment="script">
 
-    var server_port = [[#{server.port}]];
 
-    $('body').on('click', '.delete-btn', function () {
-        var data_id = $(this).attr("data-id");
+    $(document).ready(function () {
 
-        if (confirm("Do you want to delete?")) {
-            window.location = "http://localhost:" + server_port + "/delete/" + data_id;
+        function bookFilter(cateId, bookTitle) {
+
+            var tr = '';
+
+            $.ajax({
+                url: 'http://localhost:9090/ajax/book/filter?cateId=' + cateId + '&bookTitle=' + bookTitle,
+                type: 'get',
+                success: function (response) {
+
+
+                    $.each(response, function (index, book) {
+                        tr += '<tr>' +
+                            '                            <td style="text-align: left;">' +
+                            '                                <span class="text-default">#' + book.id + '</span>&nbsp;' +
+                            '                                <img style="width: 70px; height: 70px; border: 1px solid #c1c1c1;" src="' + book.thumbnail + '"\n' +
+                            '                                     class="rounded-circle" alt="alt...">\n' +
+                            '                            </td>\n' +
+                            '                            <td>' + book.book_title + '</td>\n' +
+                            '                            <td>' + book.author + '</td>\n' +
+                            '                            <td>' + book.publisher + '</td>\n' +
+                            '                            <td>\n' +
+                            '                                <span style="font-size: 15px; padding: 5px 10px; border-radius: 35px"\n' +
+                            '                                      class="badge badge-pill purple trigger"\n' +
+                            '                                      >' + book.category.name + '</span>\n' +
+                            '                            </td>\n' +
+                            '                            <td>\n' +
+                            '                                <a  type="button"\n' +
+                            '                                   class="btn-floating btn-sm btn-info"><i class="fa fa-eye"></i></a>\n' +
+                            '                                <a  type="button"\n' +
+                            '                                   class="btn-floating btn-sm btn-success"><i class="fa fa-edit"></i></a>\n' +
+                            '                                <a \n' +
+                            '                                   class=" delete-btn btn-floating btn-sm btn-danger"><i class="fa fa-trash"></i></a>\n' +
+                            '                            </td>\n' +
+                            '                        </tr>'
+                    })
+
+
+                    $('#table-id tbody').empty();
+
+
+                    console.log(tr);
+
+                    $('#table-id tbody').append(tr);
+
+
+                    console.log(response);
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            });
+
         }
 
+        $('#search-form').on('submit', function (event) {
+            event.preventDefault();
+
+
+            var cate_id = $('#cate-id').val();
+            if (cate_id == null)
+                cate_id = '';
+
+            bookFilter(cate_id, $('#book-title').val());
+        });
+
+        $('body').on('click', '.delete-btn', function () {
+            var data_id = $(this).attr("data-id");
+
+            if (confirm("Do you want to delete?")) {
+                window.location = "http://localhost:" + server_port + "/delete/" + data_id;
+            }
+
+        });
+
+
+        // (function () {
+        // })();
     });
+
+    var server_port = [[#{server.port}]];
+
 
 </script>
 

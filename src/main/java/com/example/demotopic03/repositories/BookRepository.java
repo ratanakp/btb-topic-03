@@ -20,6 +20,19 @@ public interface BookRepository {
     })
     List<Book> getAll();
 
+
+    @SelectProvider(type = BookProvider.class, method = "bookFilterProvider")
+    @Results({
+            @Result(column = "id", property = "id"),
+            @Result(column = "title", property = "title"),
+            @Result(column = "cate_id", property = "category.id"),
+            @Result(column = "name", property = "category.name")
+    })
+    List<Book> bookFilter(BookFilter filter);
+
+
+
+
     @Select("select * from tb_book b inner join tb_category c ON b.cate_id = c.id where b.id=#{id}")
     @Results({
             @Result(column = "id", property = "id"),
@@ -40,10 +53,6 @@ public interface BookRepository {
     @InsertProvider(type = BookProvider.class, method = "createProvider")
     boolean create(Book book);
 
-
-
-    @SelectProvider(method = "bookFilter", type = BookProvider.class)
-    List<Book> bookFilter(BookFilter bookFilter);
 
 
     @Select("select count(*) from tb_book")

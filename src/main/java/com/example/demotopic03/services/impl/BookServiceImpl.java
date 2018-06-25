@@ -46,14 +46,14 @@ public class BookServiceImpl implements BookService {
         return this.bookRepository.create(book);
     }
 
+    @Override
+    public Integer count() {
+        return this.bookRepository.count();
+    }
+
 
     @Override
     public List<Book> bookFilter(BookFilter bookFilter) {
         return this.bookRepository.bookFilter(bookFilter);
-    }
-
-    @Override
-    public Integer count() {
-        return this.bookRepository.count();
     }
 }

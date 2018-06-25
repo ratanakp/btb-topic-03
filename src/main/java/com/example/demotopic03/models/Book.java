@@ -1,6 +1,9 @@
 package com.example.demotopic03.models;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import javax.validation.constraints.*;
 import java.util.List;
 
@@ -9,6 +12,7 @@ public class Book {
     private Integer id;
 
     @Size(min = 5, max = 255)
+    @JsonProperty("book_title")
     private String title;
 
     //    @NotNull(message = "{1} meme Custom!")

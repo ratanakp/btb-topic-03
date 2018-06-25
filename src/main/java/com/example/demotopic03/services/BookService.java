@@ -17,7 +17,6 @@ public interface BookService {
 
     boolean create(Book book);
 
-
     List<Book> bookFilter(BookFilter bookFilter);
 
     Integer count();

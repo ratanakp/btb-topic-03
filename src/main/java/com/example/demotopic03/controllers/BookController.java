@@ -35,11 +35,19 @@ public class BookController {
 
     @GetMapping({"/book", "home"})
 //    @RequestMapping(value = {"/index", "/", "/home"}, method = RequestMethod.GET)
-    public String index(ModelMap model) {
+    public String index(ModelMap model, BookFilter bookFilter) {
 
-        List<Book> bookList = this.bookService.getAll();
+        System.out.println(bookFilter);
 
-        model.addAttribute("books", bookList);
+//        List<Book> bookList = this.bookService.getAll();
+
+        List<Book> books = this.bookService.bookFilter(bookFilter);
+
+        model.addAttribute("books", books);
+
+
+        List<Category> categories = this.categoryService.getAll();
+        model.addAttribute("categories", categories);
 
         return "book/all-book";
     }
@@ -182,13 +190,6 @@ public class BookController {
         return "index";
     }
 
-
-    @ResponseBody
-    @RequestMapping("/book/filter")
-    List<Book> bookFilter(BookFilter bookFilter) {
-        System.out.println(bookFilter);
-        return this.bookService.bookFilter(bookFilter);
-    }
 
 
 }

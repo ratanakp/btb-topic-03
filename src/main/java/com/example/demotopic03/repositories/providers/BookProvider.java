@@ -2,6 +2,7 @@ package com.example.demotopic03.repositories.providers;
 
 import com.example.demotopic03.models.Book;
 import com.example.demotopic03.models.filters.BookFilter;
+import com.sun.tools.corba.se.idl.constExpr.And;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.jdbc.SQL;
 
@@ -30,21 +31,20 @@ public class BookProvider {
     }
 
 
-    public String bookFilter(BookFilter bookFilter) {
+    public String bookFilterProvider(BookFilter bookFilter) {
         return new SQL() {{
             SELECT("*");
             FROM("tb_book b");
             INNER_JOIN("tb_category c ON b.cate_id = c.id");
 
+            if (bookFilter.getCateId() != null)
+                WHERE("c.id = #{cateId}");
+
             if (bookFilter.getBookTitle() != null)
                 WHERE("b.title iLIKE '%' || #{bookTitle} || '%'");
 
-            if (bookFilter.getCateName() != null)
-                WHERE("c.name iLIKE '%' || #{cateName} || '%'");
-
             ORDER_BY("b.id desc");
+
         }}.toString();
     }
-
-
 }
