@@ -4,6 +4,7 @@ import com.example.demotopic03.models.Book;
 import com.example.demotopic03.models.filters.BookFilter;
 import com.example.demotopic03.repositories.providers.BookProvider;
 import org.apache.ibatis.annotations.*;
+import org.apache.ibatis.mapping.StatementType;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -51,12 +52,40 @@ public interface BookRepository {
     boolean delete(Integer id);
 
     @InsertProvider(type = BookProvider.class, method = "createProvider")
+    @SelectKey(
+            keyProperty = "id",
+            keyColumn = "curr_id",
+            statementType = StatementType.PREPARED,
+            before = false,
+            resultType = Integer.class,
+            statement = "select currval('tb_book_id_seq') as curr_id"
+    )
     boolean create(Book book);
 
 
 
     @Select("select count(*) from tb_book")
     Integer count();
+
+
+
+    @Insert({
+            "<script>" ,
+                "insert into tb_book(title, author, publisher, thumbnail, cate_id) values" ,
+                    "<foreach collection='books' item='book' index='ind_songleang' separator=','>(" ,
+                        "#{book.title}",
+                        ",#{book.author}",
+                        ",#{book.publisher}",
+                        ",#{book.thumbnail}",
+                        ",#{book.category.id}",
+                    ")</foreach>" ,
+            "</script>"
+    })
+    boolean creates(@Param("books") List<Book> books);
+
+
+
+
 
     /*Faker faker = new Faker();
 

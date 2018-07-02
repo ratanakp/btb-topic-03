@@ -3,10 +3,12 @@ package com.example.demotopic03.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.swagger.annotations.ApiModel;
 
 import javax.validation.constraints.*;
 import java.util.List;
 
+@ApiModel("Book Model")
 public class Book {
 
     private Integer id;

@@ -20,4 +20,7 @@ public interface BookService {
     List<Book> bookFilter(BookFilter bookFilter);
 
     Integer count();
+
+
+    boolean creates(List<Book> books);
 }

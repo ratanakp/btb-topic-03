@@ -234,24 +234,156 @@
         </div>
         <hr>
 
-
     </div>
+
+
+
+    <!--Modal: Add Book / Update Book Form-->
+    <div class="modal fade" id="modalCreateForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog cascading-modal" role="document" style="min-width: 70%;">
+            <!--Content-->
+            <div class="modal-content">
+
+                <!--Modal cascading tabs-->
+                <div class="modal-c-tabs">
+
+                    <!-- Nav tabs -->
+                    <ul class="nav nav-tabs tabs-2 light-blue darken-3">
+                        <li class="text-white text-center">
+                            <span>Create Book</span>
+                        </li>
+                    </ul>
+
+                    <!--Body-->
+                    <div class="modal-body mb-1">
+
+
+                        <!-- Extended material form grid -->
+                        <form class="md-form">
+                            <!-- Grid row -->
+                            <div class="form-row">
+                                <!-- Grid column -->
+                                <div class="col-md-12">
+                                    <!-- Material input -->
+                                    <div class="md-form form-group">
+                                        <input id="title" type="text"  class="form-control">
+                                        <label for="title">Book Title</label>
+
+                                    </div>
+                                </div>
+                                <!-- Grid column -->
+
+                                <!-- Grid column -->
+                                <div class="col-md-12">
+                                    <!-- Material input -->
+                                    <div class="md-form form-group">
+                                        <!--Blue select-->
+                                        <select class="mdb-select colorful-select dropdown-default" id="category_id">
+                                            <!--<option disabled th:unless="${isNew}">Choose Your Category</option>-->
+                                            <option disabled  selected>Choose Your Category</option>
+                                            <th:block>
+                                                <option th:each="category: ${categories}" th:object="${category}" th:value="*{id}" th:text="*{name}"></option>
+                                            </th:block>
+
+                                        </select>
+                                        <label>Category</label>
+
+                                        <!--/Blue select-->
+                                    </div>
+                                </div>
+                                <!-- Grid column -->
+
+                                <!-- Grid column -->
+                                <div class="col-md-6">
+                                    <!-- Material input -->
+                                    <div class="md-form form-group">
+                                        <input id="author" type="text" class="form-control" >
+                                        <label for="author">Author</label>
+                                    </div>
+                                </div>
+                                <!-- Grid column -->
+
+                                <!-- Grid column -->
+                                <div class="col-md-6">
+                                    <!-- Material input -->
+                                    <div class="md-form form-group">
+                                        <input id="publisher" type="text" class="form-control" >
+                                        <label for="publisher">Publisher</label>
+                                    </div>
+                                </div>
+                                <!-- Grid column -->
+
+                                <!-- Grid column -->
+                                <div class="col-md-12">
+                                    <!-- Material input -->
+                                    <div class="md-form form-group file-field">
+                                        <div class="btn btn-outline-default btn-rounded waves-effect btn-sm float-left">
+                                            <span>Choose file</span>
+                                            <input type="file" name="file" id="upload-file">
+                                        </div>
+                                        <div class="file-path-wrapper">
+                                            <input class="file-path validate" type="text" placeholder="Upload your file">
+                                        </div>
+                                    </div>
+
+
+
+                                </div>
+                                <!-- Grid column -->
+
+                            </div>
+                            <!-- Grid row -->
+
+                            <!--id and thumbnail-->
+                            <input type="hidden" ><br>
+                            <input type="hidden" >
+
+                        </form>
+                        <!-- Extended material form grid -->
+                        <div class="text-center mt-2">
+                            <button id="btn-save" class="btn btn-info btn-block">Save <i class="fa fa-edit ml-1"></i></button>
+                        </div>
+
+
+
+                    </div>
+                    <!--Footer-->
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-danger waves-effect ml-auto" data-dismiss="modal">
+                            Close
+                        </button>
+                    </div>
+
+
+                </div>
+            </div>
+            <!--/.Content-->
+        </div>
+    </div>
+    <!--Modal: Add Book / Update Book Form-->
+
+    <div class="text-center">
+        <a href="" class="btn btn-primary btn-rounded my-3" data-toggle="modal" data-target="#modalCreateForm"><i
+                class="fa fa-edit"></i>&nbsp;Add New</a>
+    </div>
+
+
+
 
 </main>
 <!--/Main layout-->
 
 </body>
-<script layout:fragment="script">
 
+<script layout:fragment="script">
 
     $(document).ready(function () {
 
         function bookFilter(cateId, bookTitle) {
-
             var tr = '';
-
             $.ajax({
-                url: 'http://localhost:9090/ajax/book/filter?cateId=' + cateId + '&bookTitle=' + bookTitle,
+                url: '/api/v1/book/filter?cateId=' + cateId + '&bookTitle=' + bookTitle,
                 type: 'get',
                 success: function (response) {
 
@@ -272,12 +404,12 @@
                             '                                      >' + book.category.name + '</span>\n' +
                             '                            </td>\n' +
                             '                            <td>\n' +
-                            '                                <a  type="button"\n' +
+                            '                                <a href="/view/' + book.id + '" type="button"\n' +
                             '                                   class="btn-floating btn-sm btn-info"><i class="fa fa-eye"></i></a>\n' +
-                            '                                <a  type="button"\n' +
+                            '                                <a href="/update/' + book.id + '" type="button"\n' +
                             '                                   class="btn-floating btn-sm btn-success"><i class="fa fa-edit"></i></a>\n' +
                             '                                <a \n' +
-                            '                                   class=" delete-btn btn-floating btn-sm btn-danger"><i class="fa fa-trash"></i></a>\n' +
+                            '                                   data-id="' + book.id + '" class=" delete-btn btn-floating btn-sm btn-danger"><i class="fa fa-trash"></i></a>\n' +
                             '                            </td>\n' +
                             '                        </tr>'
                     })
@@ -297,7 +429,6 @@
                     console.log(error);
                 }
             });
-
         }
 
         $('#search-form').on('submit', function (event) {
@@ -311,18 +442,83 @@
             bookFilter(cate_id, $('#book-title').val());
         });
 
-        $('body').on('click', '.delete-btn', function () {
+        /*$('body').on('click', '.delete-btn', function () {
             var data_id = $(this).attr("data-id");
 
             if (confirm("Do you want to delete?")) {
                 window.location = "http://localhost:" + server_port + "/delete/" + data_id;
             }
 
+        });*/
+
+        $('.delete-btn').on('click', function (e) {
+            var book_id = $(this).attr('data-id');
+
+            $.ajax({
+                url: 'api/v1/book/' + book_id,
+                type: 'delete',
+                success: function (response) {
+                    console.log(response);
+                    bookFilter('', '');
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            });
+
+        })
+
+
+        $('#modalCreateForm').modal({
+            show: false,
+            backdrop: 'static',
+            keyboard: false
         });
 
 
-        // (function () {
-        // })();
+        $('#upload-file').on('change', function (e) {
+
+        })
+
+
+
+        $('body').on('click', '#btn-save', function (e) {
+            var title = $('#title').val();
+            var author = $('#author').val();
+            var publisher = $('#publisher').val();
+            var cate_id = $('#category_id').val();
+
+            var book = {
+                "book_title": title,
+                "author": author,
+                "publisher": publisher,
+                "category": {
+                    "id": cate_id
+                }
+            }
+
+
+            $.ajax({
+                url: '/api/v1/book',
+                type: 'post',
+                data: JSON.stringify(book),
+                contentType: "application/json",
+                success: function (response) {
+                    console.log(response);
+                    bookFilter('', '');
+                    $('#modalCreateForm').modal('hide');
+
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+
+            })
+
+
+
+        });
+
     });
 
     var server_port = [[#{server.port}]];

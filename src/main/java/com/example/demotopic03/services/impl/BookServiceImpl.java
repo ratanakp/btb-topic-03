@@ -56,4 +56,9 @@ public class BookServiceImpl implements BookService {
     public List<Book> bookFilter(BookFilter bookFilter) {
         return this.bookRepository.bookFilter(bookFilter);
     }
+
+    @Override
+    public boolean creates(List<Book> books) {
+        return this.bookRepository.creates(books);
+    }
 }

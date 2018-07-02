@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/master}"
+
+>
+
+<head>
+    <!-- Required meta tags always come first -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title th:text="#{application.name}">BMS</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.4.0/min/basic.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.4.0/min/dropzone.min.css">
+
+
+
+    <style layout:fragment="style">
+        .tempting-azure-gradient {
+            background-image: linear-gradient(120deg, #84fab0 0%, #8fd3f4 100%);
+        }
+
+
+        tr td{
+            vertical-align: middle !important;
+        }
+
+        .select-wrapper input.select-dropdown {
+            margin: 0;
+        }
+
+        .trigger {
+            padding: 1px 10px;
+            font-size: 12px;
+            font-weight: 400;
+            border-radius: 10px;
+            background-color: #eee;
+            color: #212121;
+            display: inline-block;
+            margin: 2px 5px;
+        }
+
+        .hoverable, .trigger {
+            transition: box-shadow 0.55s;
+            box-shadow: 0;
+        }
+
+        .hoverable:hover, .trigger:hover {
+            transition: box-shadow 0.45s;
+            box-shadow: 0 8px 17px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        }
+
+
+    </style>
+
+
+</head>
+
+<body>
+
+<!--Main layout-->
+<main layout:fragment="content">
+
+    <div class="container-fluid text-center">
+
+
+
+
+        <div class="card card-cascade narrower">
+
+            <!--Card image-->
+            <div class="view view-cascade gradient-card-header purple-gradient narrower py-2 mx-4 mb-3 d-flex justify-content-between align-items-center">
+
+
+                <div>
+
+                </div>
+
+                <span style="font-size: 20px" class="white-text text-center">Add Image &nbsp;&nbsp; <i class="fa fa-book"></i></span>
+
+                <div>
+
+                </div>
+
+            </div>
+            <!--/Card image-->
+
+            <div class="px-4">
+
+                <!-- Extended material form grid -->
+                <form class="md-form dropzone" action="/api/v1/book/upload" method="post" enctype="multipart/form-data" id="image-upload">
+
+                </form>
+                <!-- Extended material form grid -->
+
+                <span class="mx-4"></span>
+
+            </div>
+        </div>
+        <hr>
+
+
+    </div>
+
+</main>
+<!--/Main layout-->
+
+</body>
+
+<script layout:fragment="script" th:inline="javascript">
+
+    Dropzone.options.imageUpload = {
+        paramName: 'file_btb',
+        maxFileSize: 1000,
+
+        /*sending: function (file) {
+            var name = file.upload.filename;
+            // console.log(name);
+            name = name.split('.');
+            name = name[name.length - 1];
+            // console.log(name);
+            file.name = name;
+            file.upload.filename = name;
+        },
+
+        success: function (response) {
+
+            console.log("ok good");
+            console.log(response);
+
+        },
+        error: function (error) {
+
+        },*/
+        /////////////////////////////////////////////////////
+
+        init: function() {
+            this.on("queuecomplete", function(file) {
+
+            });
+
+            this.on("complete", function (file) {
+
+            });
+
+            this.on("sending", function (file) {
+
+
+            });
+
+            this.on("success", function (response, meme, meme2, meme3) {
+
+                console.log(response)
+                console.log(meme)
+                console.log(meme2)
+                console.log(meme3)
+
+                swal({
+                    title: 'Image Upload success!',
+                    type: 'success'
+                });
+
+            });
+
+            this.on("sending", function (file) {
+
+            });
+
+            ////////////End Get Image Back//////////
+
+        }
+    };
+
+</script>
+
+
+</html>
