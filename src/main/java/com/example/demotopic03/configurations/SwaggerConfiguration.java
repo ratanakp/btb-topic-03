@@ -33,7 +33,7 @@ public class SwaggerConfiguration {
                 .paths(PathSelectors.any())
 //                .paths(PathSelectors.ant("/api/v1/book/**")) // specific path
                 .build()
-                .securitySchemes(securitySchemes)
+//                .securitySchemes(securitySchemes)
                 .apiInfo(apiInfo());
     }
 

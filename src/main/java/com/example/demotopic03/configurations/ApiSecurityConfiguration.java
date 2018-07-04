@@ -2,6 +2,7 @@ package com.example.demotopic03.configurations;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -26,6 +27,7 @@ public class ApiSecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.antMatcher("/api/**")
                 .authorizeRequests()
                 .anyRequest()
+//                .antMatchers(HttpMethod.POST)
                 .hasAnyRole("API");
 
         http.httpBasic();
@@ -41,7 +43,7 @@ public class ApiSecurityConfiguration extends WebSecurityConfigurerAdapter {
     }
 
 
-    public static void main(String[] args) {
+    /*public static void main(String[] args) {
 
         String username = "API_USERNAME";
         String password = "API_PASSWORD";
@@ -50,7 +52,7 @@ public class ApiSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
         System.out.println(basicKey);
 
-    }
+    }*/
 
 
 }

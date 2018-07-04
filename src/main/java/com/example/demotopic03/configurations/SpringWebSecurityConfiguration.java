@@ -80,7 +80,6 @@ public class SpringWebSecurityConfiguration extends WebSecurityConfigurerAdapter
         http.authorizeRequests().antMatchers("/user/**")
                 .hasAnyRole("USER");
 
-
         http.logout()
                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout"));
 
