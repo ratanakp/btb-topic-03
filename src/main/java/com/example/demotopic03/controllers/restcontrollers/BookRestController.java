@@ -5,10 +5,7 @@ import com.example.demotopic03.models.Book;
 import com.example.demotopic03.models.filters.BookFilter;
 import com.example.demotopic03.services.BookService;
 import com.example.demotopic03.services.UploadService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -53,6 +50,7 @@ public class BookRestController {
 
 
     @PostMapping("")
+    @ApiOperation(value = "Create Book", authorizations = {@Authorization(value = "basicAuth")})
     public Map<String, Object> create(@RequestBody Book book) {
         this.bookService.create(book) ;
 

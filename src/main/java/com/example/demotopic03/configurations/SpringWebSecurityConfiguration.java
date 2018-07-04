@@ -2,18 +2,22 @@ package com.example.demotopic03.configurations;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
 @EnableWebSecurity
+@Order(2)
 public class SpringWebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 
@@ -24,7 +28,12 @@ public class SpringWebSecurityConfiguration extends WebSecurityConfigurerAdapter
     @Autowired
     private AuthenticationEntryPoint authenticationEntryPoint;
 
-    @Override
+
+    @Autowired
+    @Qualifier("userDetailServiceImpl")
+    private UserDetailsService userDetailsService;
+
+    /*@Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.inMemoryAuthentication().withUser("admin_pumin")
                 .password("{noop}admin").roles("ADMIN", "DBA", "USER")
@@ -33,8 +42,14 @@ public class SpringWebSecurityConfiguration extends WebSecurityConfigurerAdapter
 
         auth.inMemoryAuthentication().withUser("user").password("{noop}user")
                 .roles("USER");
-    }
+    }*/
 
+    //region UserDetailService
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(userDetailsService);
+    }
+    //endregion
 
     @Override
     public void configure(WebSecurity web) throws Exception {

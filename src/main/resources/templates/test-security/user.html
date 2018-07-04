@@ -1,10 +1,19 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+
+      xmlns:th="http://www.thymeleaf.org"
+>
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
 <body>
     <h1>Hello User</h1>
+
+
+    <span sec:authorize="hasRole('ROLE_USER')">
+        this is for admin!
+    </span>
+
 </body>
 </html>

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+                xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -19,8 +20,10 @@
     <ul class="nav navbar-nav nav-flex-icons ml-auto">
 
         <li class="nav-item">
-            <a class="nav-link"><i class="fa fa-user"></i> <span
-                    class="clearfix d-none d-sm-inline-block">Account</span></a>
+            <a class="nav-link"><i class="fa fa-user"></i>
+
+                <span sec:authorize="isAuthenticated()" th:text="${#authentication.principal.username}" class="clearfix d-none d-sm-inline-block">Account</span>
+                <span sec:authorize="isAnonymous()" class="clearfix d-none d-sm-inline-block">Account</span></a>
         </li>
         <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown"
