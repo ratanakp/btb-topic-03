@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/master}"
+>
+
+<head>
+    <!-- Required meta tags always come first -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title th:text="#{application.name}">BMS</title>
+
+    <style layout:fragment="style">
+        .tempting-azure-gradient {
+            background-image: linear-gradient(120deg, #84fab0 0%, #8fd3f4 100%);
+        }
+
+        tr td {
+            vertical-align: middle !important;
+        }
+
+        .select-wrapper input.select-dropdown {
+            margin: 0;
+        }
+
+        .trigger {
+            padding: 1px 10px;
+            font-size: 12px;
+            font-weight: 400;
+            border-radius: 10px;
+            background-color: #eee;
+            color: #212121;
+            display: inline-block;
+            margin: 2px 5px;
+        }
+
+        .hoverable, .trigger {
+            transition: box-shadow 0.55s;
+            box-shadow: 0;
+        }
+
+        .hoverable:hover, .trigger:hover {
+            transition: box-shadow 0.45s;
+            box-shadow: 0 8px 17px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        }
+
+    </style>
+
+
+</head>
+
+<body>
+
+<!--Main layout-->
+<main layout:fragment="content">
+
+    <div class="container-fluid text-center">
+
+        <!--Top Table UI-->
+        <div class="card p-2 mb-5">
+
+            <!--Grid row-->
+            <div class="row">
+
+                <div class="col-lg-10 col-md-12">
+                    <!--<form action="/book" class="form-row" id="filter-book">-->
+                    <form class="form-row" action="/book/paginate" method="get">
+                        <!--Grid column-->
+
+                        <div class="col-lg-6 col-md-12">
+                            <!--Name-->
+                            <select name="cateId" id="search-category-id"
+                                    class="mdb-select colorful-select dropdown-default mx-2">
+                                <option value="" disabled selected>Filter By Category</option>
+                                <option value="">All Categories</option>
+                                <option th:each="category: ${categories}" th:value="${category.id}"
+                                        th:text="${category.name}">Category
+                                </option>
+                            </select>
+                        </div>
+
+                        <div class="col-lg-6 col-md-12 ">
+
+                            <div class="form-inline md-form mt-2 ml-2">
+                                <input name="bookTitle" class="form-control my-0" id="search-book-title" type="text"
+                                       placeholder="Search Book By Title" style="width: 90%;">
+
+                                <!--submit using jquery-->
+                                <!-- <button type="submit"
+                                         class="btn btn-sm btn-primary ml-2 px-1 btn-block btn-submit-search"
+                                         style="width: 8%"><i
+                                         class="fa fa-search"></i></button>-->
+
+
+                                <button type="submit" class="btn btn-sm btn-primary ml-2 px-1 btn-block"
+                                        style="width: 8%"><i
+                                        class="fa fa-search"></i></button>
+                                <!--<label for="searchBookField">Search Book By Title</label>-->
+                            </div>
+
+                        </div>
+                        <!--Grid column-->
+                    </form>
+                </div>
+
+                <div class="col-lg-2 col-md-12">
+                    <a href="/create" class="btn btn-primary btn-block"><i class="fa fa-edit"></i> Add New</a>
+                </div>
+
+            </div>
+            <!--Grid row-->
+
+        </div>
+        <!--Top Table UI-->
+
+
+        <div class="card card-cascade narrower">
+
+            <!--Card image-->
+            <div class="view view-cascade gradient-card-header rgba-pink-strong narrower py-2 mx-4 mb-3 d-flex justify-content-between align-items-center">
+                <div>
+
+                </div>
+
+                <span style="font-size: 20px" class="white-text text-center">List of All Books &nbsp;&nbsp; <i
+                        class="fa fa-book"></i></span>
+                <div>
+
+                </div>
+
+            </div>
+            <!--/Card image-->
+
+            <div class="px-4">
+
+                <div class="table" style="margin-bottom: 0px;">
+                    <!--Table-->
+                    <table class="table table-hover mb-0" th:if="${books.size()} > 0" id="book-table">
+
+                        <!--Table head-->
+                        <thead>
+                        <tr>
+                            <th class="th-lg" th:text="#{table.id}">#ID</th>
+                            <th class="th-lg" th:text="#{table.title}">Title</th>
+                            <th class="th-lg" th:text="#{table.author}">Author</th>
+                            <th class="th-lg" th:text="#{table.publisher}">Publisher</th>
+                            <th class="th-lg" th:text="#{category}">Category</th>
+                            <th class="th-lg" th:text="#{table.action}">Action</th>
+                        </tr>
+                        </thead>
+                        <!--Table head-->
+
+                        <!--Table body-->
+                        <tbody>
+                        <tr th:if="${books} != null" th:each="book: ${books}" th:object="${book}">
+                            <td style="text-align: left;">
+                                <span class="text-default">#[[*{id}]]</span>&nbsp;
+                                <img style="width: 70px; height: 70px; border: 1px solid #c1c1c1;" th:src="*{thumbnail}"
+                                     class="rounded-circle" alt="alt...">
+                            </td>
+                            <td th:text="*{title}">Title</td>
+                            <td th:text="*{author}">Author</td>
+                            <td th:text="*{publisher}">Publisher</td>
+                            <td>
+                                <span style="font-size: 15px; padding: 5px 10px; border-radius: 35px"
+                                      class="badge badge-pill purple trigger"
+                                      th:text="*{category.name}">Category Name</span>
+                            </td>
+                            <td>
+                                <a th:href="@{/view/{id}(id=${book.getId()})}" type="button"
+                                   class="btn-floating btn-sm btn-info"><i class="fa fa-eye"></i></a>
+                                <a th:href="@{/update/{id}(id=${book.getId()})}" type="button"
+                                   class="btn-floating btn-sm btn-success"><i class="fa fa-edit"></i></a>
+                                <a th:attr="data-id=${book.getId()}" type="button"
+                                   class=" delete-btn btn-floating btn-sm btn-danger"><i class="fa fa-trash"></i></a>
+                            </td>
+                        </tr>
+
+                        </tbody>
+                        <!--Table body-->
+                    </table>
+                    <!--Table-->
+
+                    <div th:unless="${books.size()} > 0" class="text-danger">No Book Found!!!</div>
+                </div>
+
+                <hr class="my-0">
+
+                <!--Bottom Table UI-->
+                <div class="d-flex justify-content-between" th:if="${books.size()} > 0">
+
+                    <!--Name-->
+                    <select class="mdb-select colorful-select dropdown-default mt-2 hidden-md-down">
+                        <option value="" disabled>Rows number</option>
+                        <option value="1" selected>10 rows</option>
+                        <option value="2">25 rows</option>
+                        <option value="3">50 rows</option>
+                        <option value="4">100 rows</option>
+                    </select>
+
+                    <!--Pagination -->
+                    <nav class="my-4">
+                        <ul class="pagination pagination-circle pg-blue mb-0">
+
+                            <!--First-->
+                            <li class="page-item clearfix d-none d-md-block"
+                                th:classappend="${paginate.page == 1}?'disabled':''">
+                                <a class="page-link"
+                                   th:href="@{/book/paginate(cateId=${filter.cateId}, bookTitle=${filter.bookTitle}, page=1)}">
+                                    First
+                                </a>
+                            </li>
+
+                            <!--Arrow left-->
+                            <li class="page-item" th:classappend="${paginate.page == 1}?'disabled':''">
+                                <a class="page-link" aria-label="Previous"
+                                   th:href="@{/book/paginate(cateId=${filter.cateId}, bookTitle=${filter.bookTitle}, page=${paginate.previousPage})}">
+                                    <span aria-hidden="true">&laquo;</span>
+                                    <span class="sr-only">Previous</span>
+                                </a>
+                            </li>
+
+                            <!--Numbers-->
+                            <li class="page-item" th:classappend="${paginate.page == i} ? 'active':''"
+                                th:each="i: ${#numbers.sequence(paginate.startPage, paginate.endPage)}">
+                                <a class="page-link" th:text="${i}"
+                                   th:href="@{/book/paginate(cateId=${filter.cateId}, bookTitle=${filter.bookTitle}, page=${i})}">1</a>
+                            </li>
+
+                            <!--Arrow right-->
+                            <li class="page-item" th:classappend="${paginate.page == paginate.totalPages}?'disabled':''">
+                                <a class="page-link" aria-label="Next"
+                                   th:href="@{/book/paginate(cateId=${filter.cateId}, bookTitle=${filter.bookTitle}, page=${paginate.nextPage})}">
+                                    <span aria-hidden="true">&raquo;</span>
+                                    <span class="sr-only">Next</span>
+                                </a>
+                            </li>
+
+                            <!--First-->
+                            <li class="page-item clearfix d-none d-md-block" th:classappend="${paginate.page == paginate.totalPages}?'disabled':''">
+                                <a class="page-link"
+                                   th:href="@{/book/paginate(cateId=${filter.cateId}, bookTitle=${filter.bookTitle}, page=${paginate.totalPages})}">
+                                    Last
+                                </a>
+                            </li>
+
+                        </ul>
+                    </nav>
+                    <!--/Pagination -->
+
+                </div>
+                <!--Bottom Table UI-->
+
+            </div>
+        </div>
+        <hr>
+    </div>
+
+    <!--Modal: Add Book / Update Book Form-->
+    <div class="modal fade" id="modalCreateForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog cascading-modal" role="document" style="min-width: 70%;">
+            <!--Content-->
+            <div class="modal-content">
+
+                <!--Modal cascading tabs-->
+                <div class="modal-c-tabs">
+
+                    <!-- Nav tabs -->
+                    <ul class="nav nav-tabs tabs-2 light-blue darken-3">
+                        <li class="text-white text-center">
+                            <span>Create Book</span>
+                        </li>
+                    </ul>
+
+                    <!--Body-->
+                    <div class="modal-body mb-1">
+
+
+                        <!-- Extended material form grid -->
+                        <form class="md-form">
+                            <!-- Grid row -->
+                            <div class="form-row">
+                                <!-- Grid column -->
+                                <div class="col-md-12">
+                                    <!-- Material input -->
+                                    <div class="md-form form-group">
+                                        <input type="text" class="form-control" id="inputTitle4MD">
+                                        <label for="inputTitle4MD">Book Title</label>
+
+                                    </div>
+                                </div>
+                                <!-- Grid column -->
+
+                                <!-- Grid column -->
+                                <div class="col-md-12">
+                                    <!-- Material input -->
+                                    <div class="md-form form-group">
+                                        <!--Blue select-->
+                                        <select class="mdb-select colorful-select dropdown-default"
+                                                th:name="category.id" id="category_id">
+                                            <!--<option disabled th:unless="${isNew}">Choose Your Category</option>-->
+                                            <option disabled selected>Choose Your Category</option>
+                                            <th:block>
+                                                <option th:each="category: ${categories}" th:object="${category}"
+                                                        th:value="*{id}" th:text="*{name}"></option>
+                                            </th:block>
+
+                                        </select>
+                                        <label>Category</label>
+
+                                        <!--/Blue select-->
+                                    </div>
+                                </div>
+                                <!-- Grid column -->
+
+                                <!-- Grid column -->
+                                <div class="col-md-6">
+                                    <!-- Material input -->
+                                    <div class="md-form form-group">
+                                        <input type="text" class="form-control" id="inputAuthor4MD">
+                                        <label for="inputAuthor4MD">Author</label>
+                                    </div>
+                                </div>
+                                <!-- Grid column -->
+
+                                <!-- Grid column -->
+                                <div class="col-md-6">
+                                    <!-- Material input -->
+                                    <div class="md-form form-group">
+                                        <input type="text" class="form-control" id="inputPublisher4MD">
+                                        <label for="inputPublisher4MD">Publisher</label>
+                                    </div>
+                                </div>
+                                <!-- Grid column -->
+
+                                <!-- Grid column -->
+                                <div class="col-md-12">
+                                    <!-- Material input -->
+                                    <div class="md-form form-group file-field">
+                                        <div class="btn btn-outline-default btn-rounded waves-effect btn-sm float-left">
+                                            <span>Choose file</span>
+                                            <input type="file" name="file">
+                                        </div>
+                                        <div class="file-path-wrapper">
+                                            <input class="file-path validate" type="text"
+                                                   placeholder="Upload your file">
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Grid column -->
+
+                            </div>
+                            <!-- Grid row -->
+
+                            <!--id and thumbnail-->
+                            <input type="hidden"><br>
+                            <input type="hidden">
+
+                        </form>
+                        <!-- Extended material form grid -->
+                        <div class="text-center mt-2">
+                            <button class="btn btn-info btn-block">Save <i class="fa fa-edit ml-1"></i></button>
+                        </div>
+
+
+                    </div>
+                    <!--Footer-->
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-danger waves-effect ml-auto" data-dismiss="modal">
+                            Close
+                        </button>
+                    </div>
+
+
+                </div>
+            </div>
+            <!--/.Content-->
+        </div>
+    </div>
+    <!--Modal: Add Book / Update Book Form-->
+
+    <div class="text-center">
+        <a href="" class="btn btn-primary btn-rounded my-3" data-toggle="modal" data-target="#modalCreateForm"><i
+                class="fa fa-edit"></i>&nbsp;Add New</a>
+    </div>
+
+</main>
+<!--/Main layout-->
+
+</body>
+<script layout:fragment="script">
+
+    $(document).ready(function () {
+
+
+        function searchBook(cateId, bookTitle) {
+
+            if (cateId == null)
+                cateId = '';
+
+            $.ajax({
+                url: '/ajax/book/filter?cateId=' + cateId + '&bookTitle=' + bookTitle,
+                method: 'get',
+                success: function (response) {
+
+                    var tr = '';
+
+                    $.each(response, function (index, book) {
+                        console.log(book);
+                        tr += '<tr>'
+                            + '<td style="text-align: left;">'
+                            + '<span class="text-default">#' + book.id + '</span>&nbsp;&nbsp;'
+                            + '<img style="width: 70px; height: 70px; border: 1px solid #c1c1c1;" src="' + book.thumbnail + '"'
+                            + 'class="rounded-circle" alt="alt...">'
+                            + '</td>'
+                            + '<td>' + book.title + '</td>'
+                            + '<td>' + book.author + '</td>'
+                            + '<td>' + book.publisher + '</td>'
+                            + '<td>'
+                            + '<span style="font-size: 15px; padding: 5px 10px; border-radius: 35px" class="badge badge-pill purple trigger">' + book.category.name + '</span>'
+                            + ' </td>'
+                            + '<td> '
+                            + '<a href="/view/' + book.id + '" type="button" class="btn-floating btn-sm btn-info"><i class="fa fa-eye"></i></a>&nbsp;'
+                            + '<a href="/update/' + book.id + '" type="button"'
+                            + 'class="btn-floating btn-sm btn-success"><i class="fa fa-edit"></i></a>&nbsp;'
+                            + '<a data-id="' + book.id + '" type="button"'
+                            + 'class="delete-btn btn-floating btn-sm btn-danger"><i class="fa fa-trash"></i></a>'
+                            + '</td>'
+                            + '</tr>';
+                    })
+
+                    $('#book-table tbody').empty();
+
+                    console.log(tr)
+                    $('tbody').append(tr);
+
+                    console.log(response);
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            })
+        }
+
+        $('#filter-book').on('submit', function (event) {
+            event.preventDefault();
+
+            searchBook($('#search-category-id').val(), $('#search-book-title').val());
+
+        });
+
+
+        $('body').on('click', '.delete-btn', function () {
+            var data_id = $(this).attr("data-id");
+
+            if (confirm("Do you want to delete?")) {
+                window.location = "/remove/" + data_id;
+            }
+
+        });
+
+
+        $('.btn-submit-search').on('click', function (event) {
+            event.preventDefault();
+
+            var cate_id = $('#search-category-id').val();
+            var book_title = $('#search-book-title').val();
+
+            if (cate_id != null)
+                window.location = "/book?cateId=" + cate_id + "&bookTitle=" + book_title;
+
+            else
+                window.location = "/book?cateId=" + "&bookTitle=" + book_title;
+        })
+
+
+        $('#addBookForm').modal({
+            show: false,
+            backdrop: false
+        })
+
+        $('#btn-show-add-book-form').on('click', function (e) {
+            $('#addBookForm').modal('show')
+        });
+
+
+        //Add book ajax
+        $('#modalCreateForm').modal({
+            show: false,
+            backdrop: 'static',
+            keyboard: false
+
+        })
+
+
+    })
+
+</script>
+
+</html>

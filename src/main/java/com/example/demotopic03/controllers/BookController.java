@@ -3,10 +3,11 @@ package com.example.demotopic03.controllers;
 
 import com.example.demotopic03.models.Book;
 import com.example.demotopic03.models.Category;
-import com.example.demotopic03.models.filters.BookFilter;
 import com.example.demotopic03.services.BookService;
 import com.example.demotopic03.services.CategoryService;
 import com.example.demotopic03.services.UploadService;
+import com.example.demotopic03.utilities.Paginate;
+import com.example.demotopic03.utilities.filters.BookFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -185,9 +186,41 @@ public class BookController {
     }
 
 
-    @GetMapping("/index/m")
-    public String indexMaterialize() {
-        return "index";
+    // all about pagination
+
+    //    @GetMapping("/book")
+    @RequestMapping(method = RequestMethod.GET, value = {"/book/paginate"})
+    public String allBookPaginate(ModelMap model, BookFilter bookFilter, Paginate paginate) {
+
+        System.out.println(bookFilter);
+
+        List<Book> bookList = this.bookService.getBookFilterPagination(bookFilter, paginate);
+
+        if (bookFilter.getCateId() != null || bookFilter.getBookTitle() != null ){
+            System.out.println("meme");
+            paginate.setTotalCount(this.bookService.countFilter(bookFilter));
+        }
+
+        else {
+            int totalBookRecord = this.bookService.count();
+            paginate.setTotalCount(totalBookRecord);
+        }
+//        paginate.setLimit(5);
+        System.out.println(paginate);
+
+
+//        paginate.setTotalCount(bookList.size());
+
+        System.out.println(bookList);
+
+        model.addAttribute("books", bookList);
+        model.addAttribute("filter", bookFilter);
+        model.addAttribute("paginate", paginate);
+
+        List<Category> categories = this.categoryService.getAll();
+        model.addAttribute("categories", categories);
+
+        return "book/all-book-paginate";
     }
 
 

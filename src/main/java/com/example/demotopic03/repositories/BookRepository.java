@@ -1,8 +1,10 @@
 package com.example.demotopic03.repositories;
 
 import com.example.demotopic03.models.Book;
-import com.example.demotopic03.models.filters.BookFilter;
 import com.example.demotopic03.repositories.providers.BookProvider;
+import com.example.demotopic03.utilities.Paginate;
+import com.example.demotopic03.utilities.Pagination;
+import com.example.demotopic03.utilities.filters.BookFilter;
 import org.apache.ibatis.annotations.*;
 import org.apache.ibatis.mapping.StatementType;
 import org.springframework.stereotype.Repository;
@@ -82,6 +84,52 @@ public interface BookRepository {
             "</script>"
     })
     boolean creates(@Param("books") List<Book> books);
+
+
+
+
+    //all about pagination
+
+    @SelectProvider(type = BookProvider.class, method = "countFilter")
+    Integer countFilter(BookFilter bookFilter);
+
+    /*
+     *
+     * TODO: get book filter with Pagination class
+     *
+     * */
+
+    @SelectProvider(method = "getBookFilterPaginationProvider", type = BookProvider.class)
+    @Results({
+            @Result(column = "book_id", property = "id"),
+            @Result(column = "book_title", property = "title"),
+            @Result(column = "book_author", property = "author"),
+            @Result(column = "book_publisher", property = "publisher"),
+            @Result(column = "book_thumbnail", property = "thumbnail"),
+            @Result(column = "category_id", property = "category.id"),
+            @Result(column = "category_name", property = "category.name")
+    })
+    List<Book> getBookFilterPagination(@Param("bookFilter") BookFilter bookFilter,@Param("pagination") Pagination pagination);
+
+
+    /*
+     *
+     * TODO: get book filter with Paginate class
+     *
+     * */
+
+    @SelectProvider(method = "getBookFilterPaginateProvider", type = BookProvider.class)
+    @Results({
+            @Result(column = "book_id", property = "id"),
+            @Result(column = "book_title", property = "title"),
+            @Result(column = "book_author", property = "author"),
+            @Result(column = "book_publisher", property = "publisher"),
+            @Result(column = "book_thumbnail", property = "thumbnail"),
+            @Result(column = "category_id", property = "category.id"),
+            @Result(column = "category_name", property = "category.name")
+    })
+    List<Book> getBookFilterPaginate(@Param("bookFilter") BookFilter bookFilter,@Param("paginate") Paginate paginate);
+
 
 
 

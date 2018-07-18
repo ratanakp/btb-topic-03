@@ -1,10 +1,9 @@
-package com.example.demotopic03.models.filters;
+package com.example.demotopic03.utilities.filters;
 
 public class BookFilter {
 
     private Integer cateId;
     private String bookTitle;
-
 
     public BookFilter() {
     }

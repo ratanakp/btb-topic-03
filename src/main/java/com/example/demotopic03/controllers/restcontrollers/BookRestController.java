@@ -2,15 +2,15 @@ package com.example.demotopic03.controllers.restcontrollers;
 
 
 import com.example.demotopic03.models.Book;
-import com.example.demotopic03.models.filters.BookFilter;
 import com.example.demotopic03.services.BookService;
 import com.example.demotopic03.services.UploadService;
+import com.example.demotopic03.utilities.Pagination;
+import com.example.demotopic03.utilities.filters.BookFilter;
 import io.swagger.annotations.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import springfox.documentation.annotations.ApiIgnore;
 
 import java.util.HashMap;
 import java.util.List;
@@ -48,11 +48,10 @@ public class BookRestController {
     }
 
 
-
     @PostMapping("")
     @ApiOperation(value = "Create Book", authorizations = {@Authorization(value = "basicAuth")})
     public Map<String, Object> create(@RequestBody Book book) {
-        this.bookService.create(book) ;
+        this.bookService.create(book);
 
         Map<String, Object> response = new HashMap<>();
 
@@ -67,7 +66,7 @@ public class BookRestController {
     @PutMapping("")
     public Map<String, Object> update(@RequestBody Book book) {
 
-        this.bookService.update(book) ;
+        this.bookService.update(book);
 
         Map<String, Object> response = new HashMap<>();
 
@@ -76,7 +75,6 @@ public class BookRestController {
 
         return response;
     }
-
 
 
     @DeleteMapping("/{id}")
@@ -92,7 +90,6 @@ public class BookRestController {
     }
 
 
-
     @GetMapping("/{id}")
     public Map<String, Object> findOne(@PathVariable("id") Integer id) {
 
@@ -104,8 +101,7 @@ public class BookRestController {
             response.put("status", true);
             response.put("book", book);
             response.put("message", "Ok found looking good!!!");
-        }
-        else {
+        } else {
             response.put("status", false);
             response.put("book", null);
             response.put("message", "Not ok found!!!");
@@ -134,9 +130,6 @@ public class BookRestController {
     }*/
 
 
-
-
-
     @PostMapping("/upload")
     public ResponseEntity<Map<String, Object>> upload(@RequestParam("file_btb") MultipartFile file) {
 
@@ -148,14 +141,12 @@ public class BookRestController {
             response.put("status", true);
             response.put("filename", filename);
             response.put("message", "Ok upload file looking good!!!");
-        }
-        else {
+        } else {
             response.put("status", false);
             response.put("message", "Not ok upload file!!!");
         }
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
-
 
 
     @PostMapping("/multi")
@@ -173,14 +164,42 @@ public class BookRestController {
     }
 
 
+    //all about pagination
+
+    @GetMapping("/pagination")
+    public ResponseEntity<Map<String, Object>> getBookFilterPagination(BookFilter bookFilter, Pagination pagination) {
+
+        if (bookFilter.getCateId() != null || bookFilter.getBookTitle() != null) {
+            System.out.println("hermes");
+            pagination.setTotalCount(this.bookService.countFilter(bookFilter));
+        } else {
+            int totalBookRecord = this.bookService.count();
+            System.out.println("gucci");
+            pagination.setTotalCount(totalBookRecord);
+        }
+
+        System.out.println(pagination);
 
 
+        Map<String, Object> response = new HashMap<>();
+        List<Book> books = this.bookService.getBookFilterPagination(bookFilter, pagination);
 
+        if (books == null || books.size() == 0) {
+            response.put("status", false);
+            response.put("message", "Book Not Found!!!");
+            response.put("paginate", pagination);
+            response.put("data", HttpStatus.NOT_FOUND);
 
+            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+        } else {
+            response.put("status", true);
+            response.put("message", "Book Found!!!");
+            response.put("paginate", pagination);
+            response.put("data", books);
 
-
-
-
+            return ResponseEntity.ok(response);
+        }
+    }
 
 
 }

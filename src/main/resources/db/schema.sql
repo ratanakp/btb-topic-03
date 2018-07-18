@@ -51,3 +51,59 @@ create table tb_user_role (
 --   add column created_at timestamp null default now(),
 --   add column updated_at timestamp with time zone null default now();
 
+
+
+
+
+
+-- Start get_book_filter_pagination Function
+-- Note: this function can not use with h2 db, this is for pgsql
+/*CREATE FUNCTION get_book_filter_pagination(cate_id_param integer, book_title varchar, "limit" integer, "offset" integer)
+  RETURNS table(
+    id        integer,
+    title     varchar,
+    author    varchar,
+    publisher varchar,
+    thumbnail varchar,
+    cate_id   integer,
+    cate_name varchar
+  )
+AS
+$$
+DECLARE
+  --   your variable;
+BEGIN
+  if cate_id_param isnull
+  then
+    raise notice 'meme';
+    return query select b.id, b.title, b.author, b.publisher, b.thumbnail, c.id, c.name
+                 from tb_book b
+                        inner join tb_category c on b.cate_id = c.id
+                 where b.title ilike '%' || book_title || '%'
+                 limit "limit"
+                 offset "offset";
+  else
+    return query select b.id, b.title, b.author, b.publisher, b.thumbnail, c.id, c.name
+                 from tb_book b
+                        inner join tb_category c on b.cate_id = c.id
+                 where b.cate_id = cate_id_param
+                   and b.title ilike '%' || book_title || '%'
+                 limit "limit"
+                 offset "offset";
+  end if;
+
+
+END;
+$$
+LANGUAGE 'plpgsql';*/
+-- End get_book_filter_pagination Function
+
+
+
+
+
+
+
+
+
+

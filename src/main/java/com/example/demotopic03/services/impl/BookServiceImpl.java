@@ -1,9 +1,11 @@
 package com.example.demotopic03.services.impl;
 
 import com.example.demotopic03.models.Book;
-import com.example.demotopic03.models.filters.BookFilter;
 import com.example.demotopic03.repositories.BookRepository;
 import com.example.demotopic03.services.BookService;
+import com.example.demotopic03.utilities.Paginate;
+import com.example.demotopic03.utilities.Pagination;
+import com.example.demotopic03.utilities.filters.BookFilter;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -61,4 +63,23 @@ public class BookServiceImpl implements BookService {
     public boolean creates(List<Book> books) {
         return this.bookRepository.creates(books);
     }
+
+
+
+
+    @Override
+    public Integer countFilter(BookFilter bookFilter) {
+        return this.bookRepository.countFilter(bookFilter);
+    }
+    @Override
+    public List<Book> getBookFilterPagination(BookFilter bookFilter, Pagination pagination) {
+        return this.bookRepository.getBookFilterPagination(bookFilter, pagination);
+    }
+
+    @Override
+    public List<Book> getBookFilterPagination(BookFilter bookFilter, Paginate paginate) {
+
+        return this.bookRepository.getBookFilterPaginate(bookFilter, paginate);
+    }
+
 }
