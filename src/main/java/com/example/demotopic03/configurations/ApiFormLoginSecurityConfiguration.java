@@ -34,7 +34,7 @@ public class ApiFormLoginSecurityConfiguration {
         User.UserBuilder users = User.builder();
         InMemoryUserDetailsManager manager = new InMemoryUserDetailsManager();
         manager.createUser(users.username("user").password(passwordEncoder.encode("user")).roles("USER").build());
-        manager.createUser(users.username("API_HANCHEYECORESORT_USERNAME").password(passwordEncoder.encode("API_HANCHEYECORESORT_PASSWORD")).roles("API").build());
+        manager.createUser(users.username("user").password(passwordEncoder.encode("user")).roles("API").build());
         manager.createUser(users.username("admin").password(passwordEncoder.encode("admin")).roles("USER", "ADMIN").build());
 
         return manager;
@@ -75,12 +75,10 @@ public class ApiFormLoginSecurityConfiguration {
 
 
         public FormLoginWebSecurityConfigurerAdapter(AuthenticationSuccessHandler successHandler,
-                                                     AuthenticationEntryPoint authenticationEntryPoint,
-                                                     AccessDeniedHandler accessDeniedHandler,
-                                                     AuthenticationFailureHandler authenticationFailureHandler) {
+                                                     AuthenticationEntryPoint authenticationEntryPoint) {
             this.successHandler = successHandler;
             this.authenticationEntryPoint = authenticationEntryPoint;
-            this.accessDeniedHandler = accessDeniedHandler;
+//            this.accessDeniedHandler = accessDeniedHandler;
         }
 
 
